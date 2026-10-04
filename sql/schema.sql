@@ -1,16 +1,19 @@
+
 CREATE DATABASE task_manager
- CHARACTER SET utf8mb4 
- COLLATE utf8mb4_unicode_ci; 
-
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
+ 
 USE task_manager;
-
-CREATE TABLE tasks (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  title VARCHAR(255) NOT NULL,
-  status ENUM('pending', 'done') NOT NULL DEFAULT 'pending',
-  created =_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-  );
-
-INSERT INTO tasks (title) VALUES 
-  ('Learn Git basics'),
-  ('Build my first PHP API');
+ 
+CREATE TABLE IF NOT EXISTS tasks (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    status ENUM('backlog', 'planned', 'in_progress', 'done') NOT NULL DEFAULT 'backlog',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+ 
+INSERT INTO tasks (title, status) VALUES
+    ('Learn Git basics', 'in_progress'),
+    ('Build my first PHP API', 'done'),
+    ('Design the board layout', 'planned'),
+    ('Add due dates', 'backlog');
