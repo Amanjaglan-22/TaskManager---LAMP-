@@ -3,7 +3,7 @@
 }
  
 body {
-    font-family: "Segoe Print", "Comic Sans MS", "Marker Felt", cursive;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     background: #c9ced6;
     margin: 0;
     padding: 20px;
