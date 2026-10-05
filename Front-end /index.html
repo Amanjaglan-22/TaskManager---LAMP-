@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Task Whiteboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="whiteboard">
+        <header class="top">
+            <h1>Task Whiteboard</h1>
+            <div class="add-row">
+                <input type="text" id="taskInput" placeholder="Write a new task..." maxlength="255">
+                <select id="statusSelect">
+                    <option value="backlog">Backlog</option>
+                    <option value="planned">Planned</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="done">Completed</option>
+                </select>
+                <button id="addBtn">Add note</button>
+            </div>
+            <p id="syncStatus" class="sync">Connecting...</p>
+        </header>
+
+        <main id="board" class="board"></main>
+
+        <div class="tray"><span class="marker red"></span><span class="marker blue"></span><span class="marker green"></span><span class="eraser"></span></div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
