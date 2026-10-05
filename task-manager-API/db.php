@@ -1,7 +1,7 @@
 <?php
 $c = require __DIR__ . '/config.php';
 $pdo = new PDO(
-    "mysql:host={$c['host']};dbname=1c{['db']};charset=utf8mb4",
+    "mysql:host={$c['host']};dbname=$c{['db']};charset=utf8mb4",
     $c['user'], $c['pass'],
     [
       PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
