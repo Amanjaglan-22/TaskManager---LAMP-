@@ -42,32 +42,32 @@ async function request(url, options) {
     }
 }
 
-async function loadTasks(){
+async function loadTasks() {
     if (busy > 0 || dragging) return;
 
     try {
-        tasks = await request(api)J;
+        tasks = await request(API);
         render();
     } catch (err) {
-        //message already show ---------- fix here
+        // Error message already handled by setSync
     }
 }
 
 async function addTask() {
     const title = taskInput.value.trim();
-    if (value === '') return;
+    if (title === '') return;
 
     try {
-        const created = await request(api, {
+        const created = await request(API, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify({title: title, status: statusSelect.value})
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title: title, status: statusSelect.value })
         });
         tasks.unshift(created);
         taskInput.value = '';
         render();
     } catch (err) {
-        //message already shown
+        // Error message already handled by setSync
     }
 }
 
@@ -80,13 +80,13 @@ async function moveTask(id, newStatus) {
     const oldStatus = task.status;
     task.status = newStatus;
     render();
+
     try {
-        await request(api + '?id' + task.id, {
-           method: 'PUT',
-           headers: {'Content-Type': 'application/json'},
-           body: JSON.stringify({ status: newStatus}) 
+        await request(`${API}?id=${task.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: newStatus })
         });
-        
     } catch (err) {
         task.status = oldStatus;
         render();
@@ -95,14 +95,16 @@ async function moveTask(id, newStatus) {
 
 async function deleteTask(id) {
     const before = tasks;
-    tasks = tasks.filter(function(t){
+    tasks = tasks.filter(function (t) {
         return t.id !== id;
     });
+    render();
+
     try {
-        await request(api + '?id' + id, { method: 'DELETE'});
+        await request(`${API}?id=${id}`, { method: 'DELETE' });
     } catch (err) {
         tasks = before;
-        render;
+        render();
     }
 }
 
@@ -111,20 +113,20 @@ function buildCard(task) {
     card.className = 'card';
     card.draggable = true;
 
-    card.addEventListener('dragstart', function(e) {
+    card.addEventListener('dragstart', function (e) {
         dragging = true;
-        e.dataTransfer.setData('text/plain', String(tast.id));
+        e.dataTransfer.setData('text/plain', String(task.id));
         card.classList.add('dragging');
     });
 
-    card.addEventListener('dragend', function(){
+    card.addEventListener('dragend', function () {
         dragging = false;
         card.classList.remove('dragging');
     });
 
     const title = document.createElement('div');
     title.className = 'card-title';
-    title.textContent = tast.title;
+    title.textContent = task.title;
 
     const actions = document.createElement('div');
     actions.className = 'card-actions';
@@ -134,13 +136,13 @@ function buildCard(task) {
         const option = document.createElement('option');
         option.value = col.status;
         option.textContent = col.label;
-        if(col.status === task.status){
+        if (col.status === task.status) {
             option.selected = true;
         }
         select.appendChild(option);
     });
 
-    select.addEventListener('chane', function (){
+    select.addEventListener('change', function () {
         moveTask(task.id, select.value);
     });
 
@@ -151,8 +153,8 @@ function buildCard(task) {
         deleteTask(task.id);
     });
 
-    action.appendChild(select);
-    action.appendChild(del);
+    actions.appendChild(select);
+    actions.appendChild(del);
     card.appendChild(title);
     card.appendChild(actions);
     return card;
@@ -162,7 +164,7 @@ function render() {
     board.innerHTML = '';
 
     COLUMNS.forEach(function (col) {
-        const item = tasks.filter(function (t) {
+        const items = tasks.filter(function (t) {
             return t.status === col.status;
         });
 
@@ -178,33 +180,33 @@ function render() {
 
         const count = document.createElement('span');
         count.className = 'count';
-        conut.textContent = items.length;
+        count.textContent = items.length;
 
         header.appendChild(name);
         header.appendChild(count);
         column.appendChild(header);
 
-        if(items.length === 0){
+        if (items.length === 0) {
             const empty = document.createElement('div');
             empty.className = 'empty';
             empty.textContent = 'Nothing here yet';
             column.appendChild(empty);
         }
 
-        items.forEach(function(task) {
+        items.forEach(function (task) {
             column.appendChild(buildCard(task));
         });
 
-        column.addEventListener('dragover', function(e) {
+        column.addEventListener('dragover', function (e) {
             e.preventDefault();
             column.classList.add('drag-over');
         });
 
-        column.addEventListener('dragleave', function() {
+        column.addEventListener('dragleave', function () {
             column.classList.remove('drag-over');
         });
 
-        column.addEventListener('drop', function(e) {
+        column.addEventListener('drop', function (e) {
             e.preventDefault();
             column.classList.remove('drag-over');
             dragging = false;
@@ -215,14 +217,13 @@ function render() {
         });
 
         board.appendChild(column);
-        
     });
 }
 
 addBtn.addEventListener('click', addTask);
 
-taskInput.addEventListener('keydown', function(e) {
-    if(e.key === 'Enter') addTask();
+taskInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') addTask();
 });
 
 loadTasks();
