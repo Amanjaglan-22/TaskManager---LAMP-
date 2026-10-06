@@ -10,6 +10,16 @@ https://devopstaskmanager.free.je/?i=1
 - Backend - PHP9 with PDO
 - Frontend - JavaScript, HTML, CSS
 
+## Setup
+
+I used the XAMPP to host my Apache server and SQL database initially, and copy pasted all the essential files in GitHub
+- Install XAMPP and open its Control Panel.
+- Click Start next to Apache and MySQL.
+- Put the project folder in C:\xampp\htdocs and name it task-manager.
+- Go to http://localhost/phpmyadmin, click the SQL tab, paste the contents of sql/schema.sql, and click Go.
+- In the api folder, copy config.sample.php and rename the copy to config.php.
+- Open http://localhost/task-manager/ and add your first task
+
 ## Features
 
 - Create tasks
@@ -38,17 +48,15 @@ task-whiteboard/
 └── README.md
 ```
 
-## Setup
-
-
-## Troubleshooting (Common scenarios I faced)
-Problem                        -	Likely cause
-"Could not reach the server"   -  Apache or MySQL is not running, or the api folder path is wrong
-404 Not Found	                 -  Project folder is not inside htdocs, or a file name does not match its link
-"Database error"	             -  Wrong values in api/config.php, or the tasks table is missing
-Page looks unstyled or old	   -  Browser cache. Press Ctrl+F5
-"Unexpected character" in      -  PHP returned an error page instead of JSON. Open api/tasks.php directly to see the error
-the console 
+## Troubleshooting
+ 
+| Problem | Likely cause |
+| --- | --- |
+| "Could not reach the server" | Apache or MySQL is not running, or the `api` folder path is wrong |
+| 404 Not Found | Project folder is not inside `htdocs`, or a file name does not match its link |
+| "Database error" | Wrong values in `api/config.php`, or the `tasks` table is missing |
+| Page looks unstyled or old | Browser cache. Press Ctrl+F5 |
+| "Unexpected character" in the console | PHP returned an error page instead of JSON. Open `api/tasks.php` directly to see the error |
 
 
 ## API
